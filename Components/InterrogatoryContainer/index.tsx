@@ -1,17 +1,7 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import QuestionCard from '../QuestionCard';
 import interData from './interData';
 import emailjs from 'emailjs-com';
-
-const Container = styled.div`
-    width: 100%;
-    max-width: 1280px;
-`;
-
-const StartBtn = styled.button`
-    width: 100px;
-`;
+import Interrogatory from '../Interrogatory';
 
 export default function InterrogatoryContainer() {
     const [answerList, setAnswerList] = useState({ email: '123', answers: [] });
@@ -48,7 +38,7 @@ export default function InterrogatoryContainer() {
                         email: answerList.email,
                         answers: JSON.stringify(answerList.answers),
                     },
-                    'user_YPN7p6zRQ4HdzMP37Gm3S',
+                    // 'user_YPN7p6zRQ4HdzMP37Gm3S',
                 )
                 .then(
                     (result) => {
@@ -62,29 +52,13 @@ export default function InterrogatoryContainer() {
     }, [isLast, answerList]);
 
     return (
-        <Container>
-            {!isStart && (
-                <StartBtn
-                    onClick={() => {
-                        setStart(true);
-                        setActiveId(1);
-                    }}
-                >
-                    Начать!
-                </StartBtn>
-            )}
-            {isStart &&
-                interData.map((data, indx) => {
-                    return activeId === data.id ? (
-                        <QuestionCard
-                            {...data}
-                            setActiveId={setActiveId}
-                            key={data.id}
-                            isLast={indx === interData.length - 1}
-                            addAnswerToList={addAnswerToList}
-                        />
-                    ) : null;
-                })}
-        </Container>
+        <Interrogatory
+            interData={interData}
+            isStart={isStart}
+            activeId={activeId}
+            setStart={setStart}
+            setActiveId={setActiveId}
+            addAnswerToList={addAnswerToList}
+        />
     );
 }

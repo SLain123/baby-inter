@@ -1,9 +1,8 @@
 import styled from 'styled-components';
+import AnswerList from '../AnswerList';
+import { InterDataType } from '../InterrogatoryContainer/interData';
 
-interface CardProps {
-    question: string;
-    answers: string[];
-    id: number;
+interface CardProps extends InterDataType {
     setActiveId: (id: number | null) => void;
     isLast: boolean;
     addAnswerToList: (
@@ -23,14 +22,6 @@ const Question = styled.p`
     font-size: 18px;
 `;
 
-const AnswerList = styled.select`
-    list-style: none;
-`;
-
-const Answer = styled.option`
-    font-size: 16px;
-`;
-
 const NextBtn = styled.button`
     font-size: 18px;
 `;
@@ -42,15 +33,12 @@ export default function QuestionCard({
     setActiveId,
     isLast,
     addAnswerToList,
+    type,
 }: CardProps) {
     return (
         <Container>
             <Question>{question}</Question>
-            <AnswerList>
-                {answers.map((answerText) => (
-                    <Answer key={answerText}>{answerText}</Answer>
-                ))}
-            </AnswerList>
+            <AnswerList type={type} answers={answers} />
             <NextBtn
                 onClick={() => {
                     addAnswerToList(question, String(id), isLast);
