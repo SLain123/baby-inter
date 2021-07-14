@@ -6,6 +6,11 @@ interface CardProps {
     id: number;
     setActiveId: (id: number | null) => void;
     isLast: boolean;
+    addAnswerToList: (
+        question: string,
+        answer: string,
+        isLast: boolean,
+    ) => void;
 }
 
 const Container = styled.div`
@@ -36,6 +41,7 @@ export default function QuestionCard({
     id,
     setActiveId,
     isLast,
+    addAnswerToList,
 }: CardProps) {
     return (
         <Container>
@@ -47,6 +53,7 @@ export default function QuestionCard({
             </AnswerList>
             <NextBtn
                 onClick={() => {
+                    addAnswerToList(question, String(id), isLast);
                     isLast ? setActiveId(null) : setActiveId((id += 1));
                 }}
             >
