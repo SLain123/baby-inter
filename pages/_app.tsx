@@ -6,6 +6,11 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Manrope', Arial, sans-serif;
+    background: url("./bg.png");
+    backdrop-filter: blur(3px);
+    min-height: 100vh;
+    min-width: 100%;
   }
 `;
 

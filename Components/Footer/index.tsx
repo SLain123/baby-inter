@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const FooterBlock = styled.div`
     width: calc(100% - 2px);
     border: red 1px solid;
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
 `;

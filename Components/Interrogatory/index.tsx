@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import QuestionCard from '../QuestionCard';
 import { InterDataType } from '../InterrogatoryContainer/interData';
+import Image from 'next/image';
+import first from '../../public/1.png';
 
 interface Props {
     interData: InterDataType[];
@@ -21,7 +23,32 @@ const Container = styled.div`
 `;
 
 const StartBtn = styled.button`
-    width: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 200px;
+    min-height: 70px;
+    font-size: 25px;
+    background: #ffde00;
+    color: #3c3d3d;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    opacity: 0.95;
+
+    :hover {
+        opacity: 1;
+    }
+`;
+
+const FirstImageContainer = styled.div`
+    width: calc(100% - 200px);
+    display: flex;
+    justify-content: center;
+    padding-left: 200px;
 `;
 
 export default function Interrogatory({
@@ -35,14 +62,25 @@ export default function Interrogatory({
     return (
         <Container>
             {!isStart && (
-                <StartBtn
-                    onClick={() => {
-                        setStart(true);
-                        setActiveId(1);
-                    }}
-                >
-                    Начать!
-                </StartBtn>
+                <>
+                    <FirstImageContainer>
+                        <Image
+                            src={first}
+                            alt='Просто картинка-каррикатура'
+                            width={450}
+                            height={420}
+                        />
+                    </FirstImageContainer>
+                    <StartBtn
+                        onClick={() => {
+                            setStart(true);
+                            setActiveId(1);
+                        }}
+                    >
+                        Пройти тест!
+                    </StartBtn>
+                    {/* <Image src={first} alt='Просто картинка-каррикатура' /> */}
+                </>
             )}
             {isStart &&
                 interData.map((data, indx) => {
