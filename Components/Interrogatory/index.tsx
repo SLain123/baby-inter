@@ -1,21 +1,7 @@
 import styled from 'styled-components';
 import QuestionCard from '../QuestionCard';
 import { InterDataType } from '../InterrogatoryContainer/interData';
-import Image from 'next/image';
-import first from '../../public/1.png';
-
-interface Props {
-    interData: InterDataType[];
-    isStart: boolean;
-    activeId: number | null;
-    setStart: (status: boolean) => void;
-    setActiveId: (id: number | null) => void;
-    addAnswerToList: (
-        question: string,
-        answer: string,
-        isLast: boolean,
-    ) => void;
-}
+import { CustomerInfoType } from '../InterrogatoryContainer';
 
 const Container = styled.div`
     width: 100%;
@@ -38,18 +24,26 @@ const StartBtn = styled.button`
     font-weight: 700;
     cursor: pointer;
     opacity: 0.95;
+    z-index: 2;
 
     :hover {
         opacity: 1;
     }
 `;
 
-const FirstImageContainer = styled.div`
-    width: calc(100% - 200px);
-    display: flex;
-    justify-content: center;
-    padding-left: 200px;
-`;
+interface Props {
+    interData: InterDataType[];
+    isStart: boolean;
+    activeId: number | null;
+    setStart: (status: boolean) => void;
+    setActiveId: (id: number | null) => void;
+    saveQuestionAndAnswer: (question: string) => void;
+    saveRadioOption: (answer: string | null) => void;
+    radioOption: null | string;
+    saveCustomerInfo: (propName: string, value: string) => void;
+    setLast: (isLast: boolean) => void;
+    customerInfo: CustomerInfoType;
+}
 
 export default function Interrogatory({
     interData,
@@ -57,30 +51,24 @@ export default function Interrogatory({
     activeId,
     setStart,
     setActiveId,
-    addAnswerToList,
+    saveQuestionAndAnswer,
+    saveRadioOption,
+    radioOption,
+    saveCustomerInfo,
+    setLast,
+    customerInfo,
 }: Props) {
     return (
         <Container>
             {!isStart && (
-                <>
-                    <FirstImageContainer>
-                        <Image
-                            src={first}
-                            alt='Просто картинка-каррикатура'
-                            width={450}
-                            height={420}
-                        />
-                    </FirstImageContainer>
-                    <StartBtn
-                        onClick={() => {
-                            setStart(true);
-                            setActiveId(1);
-                        }}
-                    >
-                        Пройти тест!
-                    </StartBtn>
-                    {/* <Image src={first} alt='Просто картинка-каррикатура' /> */}
-                </>
+                <StartBtn
+                    onClick={() => {
+                        setStart(true);
+                        setActiveId(1);
+                    }}
+                >
+                    Пройти тест!
+                </StartBtn>
             )}
             {isStart &&
                 interData.map((data, indx) => {
@@ -91,7 +79,12 @@ export default function Interrogatory({
                                 setActiveId={setActiveId}
                                 key={data.id}
                                 isLast={indx === interData.length - 1}
-                                addAnswerToList={addAnswerToList}
+                                saveQuestionAndAnswer={saveQuestionAndAnswer}
+                                saveRadioOption={saveRadioOption}
+                                radioOption={radioOption}
+                                saveCustomerInfo={saveCustomerInfo}
+                                setLast={setLast}
+                                customerInfo={customerInfo}
                             />
                         )
                     );

@@ -1,16 +1,7 @@
 import styled from 'styled-components';
 import AnswerList from '../AnswerList';
 import { InterDataType } from '../InterrogatoryContainer/interData';
-
-interface CardProps extends InterDataType {
-    setActiveId: (id: number | null) => void;
-    isLast: boolean;
-    addAnswerToList: (
-        question: string,
-        answer: string,
-        isLast: boolean,
-    ) => void;
-}
+import { CustomerInfoType } from '../InterrogatoryContainer';
 
 const Container = styled.div`
     width: 50%;
@@ -54,26 +45,64 @@ const NextBtn = styled.button`
     }
 `;
 
+interface CardProps extends InterDataType {
+    setActiveId: (id: number | null) => void;
+    isLast: boolean;
+    saveQuestionAndAnswer: (question: string) => void;
+    saveRadioOption: (answers: string | null) => void;
+    radioOption: null | string;
+    saveCustomerInfo: (propName: string, value: string) => void;
+    setLast: (isLast: boolean) => void;
+    customerInfo: CustomerInfoType;
+}
+
 export default function QuestionCard({
     question,
     answers,
     id,
+    propsName,
     setActiveId,
     isLast,
-    addAnswerToList,
     type,
+    saveQuestionAndAnswer,
+    saveRadioOption,
+    radioOption,
+    saveCustomerInfo,
+    setLast,
+    customerInfo,
 }: CardProps) {
+    const saveAnswerAndDisplayNext = () => {
+        if (type === 'radio') {
+            if (radioOption !== null) {
+                saveQuestionAndAnswer(question);
+                saveRadioOption(null);
+                isLast ? setActiveId(null) : setActiveId((id += 1));
+            } else {
+                console.log('not valid');
+            }
+        } else if (type === 'contact') {
+            if (customerInfo.name === '' || customerInfo.email === '') {
+                console.log('not valid');
+            } else {
+                isLast ? setActiveId(null) : setActiveId((id += 1));
+                setLast(true);
+            }
+        }
+    };
+
     return (
         <Container>
             <Question>{question}</Question>
-            <AnswerList type={type} answers={answers} question={question} />
-            <NextBtn
-                onClick={() => {
-                    addAnswerToList(question, String(id), isLast);
-                    isLast ? setActiveId(null) : setActiveId((id += 1));
-                }}
-            >
-                Далее
+            <AnswerList
+                type={type}
+                answers={answers}
+                question={question}
+                saveRadioOption={saveRadioOption}
+                propsName={propsName}
+                saveCustomerInfo={saveCustomerInfo}
+            />
+            <NextBtn onClick={() => saveAnswerAndDisplayNext()}>
+                {isLast ? 'Отправить анкету' : 'Далее'}
             </NextBtn>
         </Container>
     );

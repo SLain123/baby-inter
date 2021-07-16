@@ -3,6 +3,7 @@ export interface InterDataType {
     question: string;
     answers: string[];
     type: string;
+    propsName?: string[];
 }
 
 const interData: InterDataType[] = [
@@ -43,8 +44,9 @@ const interData: InterDataType[] = [
     {
         id: 4,
         question: 'Это вопрос номер 4',
-        answers: ['Ваш email'],
-        type: 'text',
+        answers: ['Ваше имя', 'Ваш email'],
+        type: 'contact',
+        propsName: ['name', 'email'],
     },
 ];
 
