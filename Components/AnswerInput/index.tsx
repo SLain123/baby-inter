@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { checkName, checkEmail } from './validateFunc';
 
 const AnswerInputForText = styled.input`
     font-size: 16px;
@@ -31,15 +32,26 @@ export default function AnswerInput({
 }: InputProps) {
     const [inputValue, setInputValue] = useState('');
 
+    const saveData = () => {
+        saveCustomerInfo(propName, inputValue);
+    };
+
     return (
         <AnswerInputForText
             onChange={(evt: React.ChangeEvent) => {
                 const target = evt.target as HTMLTextAreaElement;
                 setInputValue(target.value);
+                saveCustomerInfo(propName, '');
+
+                if (propName === 'name' && checkName(target.value)) {
+                    saveData();
+                }
+                if (propName === 'email' && checkEmail(target.value)) {
+                    saveData();
+                }
             }}
             value={inputValue}
             placeholder={answerText}
-            onBlur={() => saveCustomerInfo(propName, inputValue)}
         />
     );
 }

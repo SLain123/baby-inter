@@ -31,14 +31,14 @@ const Question = styled.p`
 
 const NextBtn = styled.button`
     font-size: 18px;
-    background: #ffde00;
+    background: ${(props) => (props.disabled ? '#9b9672' : '#ffde00')};
     color: #3c3d3d;
     padding: 15px 40px;
     border: none;
     border-radius: 5px;
     font-weight: 700;
-    cursor: pointer;
-    opacity: 0.95;
+    cursor: ${(props) => (props.disabled ? 'disable' : 'pointer')};
+    opacity: ${(props) => (props.disabled ? '1' : 1)};
 
     :hover {
         opacity: 1;
@@ -71,6 +71,15 @@ export default function QuestionCard({
     setLast,
     customerInfo,
 }: CardProps) {
+    const checkCustomerInfo = () => {
+        if (customerInfo.name !== '' && customerInfo.email !== '') {
+            return true;
+        }
+        return false;
+    };
+
+    const isDisabled = type === 'radio' ? !radioOption : !checkCustomerInfo();
+
     const saveAnswerAndDisplayNext = () => {
         if (type === 'radio') {
             if (radioOption !== null) {
@@ -81,13 +90,23 @@ export default function QuestionCard({
                 console.log('not valid');
             }
         } else if (type === 'contact') {
-            if (customerInfo.name === '' || customerInfo.email === '') {
-                console.log('not valid');
-            } else {
+            if (checkCustomerInfo()) {
                 isLast ? setActiveId(null) : setActiveId((id += 1));
                 setLast(true);
+            } else {
+                console.log('not valid');
             }
         }
+    };
+
+    const getBtnText = (isDisabled, isLast) => {
+        if (isDisabled) {
+            return 'Уточните ответ';
+        }
+        if (isLast) {
+            return 'Отправить анкету';
+        }
+        return 'Далее';
     };
 
     return (
@@ -101,8 +120,11 @@ export default function QuestionCard({
                 propsName={propsName}
                 saveCustomerInfo={saveCustomerInfo}
             />
-            <NextBtn onClick={() => saveAnswerAndDisplayNext()}>
-                {isLast ? 'Отправить анкету' : 'Далее'}
+            <NextBtn
+                onClick={() => saveAnswerAndDisplayNext()}
+                disabled={isDisabled}
+            >
+                {getBtnText(isDisabled, isLast)}
             </NextBtn>
         </Container>
     );
