@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import QuestionCard from '../QuestionCard';
 import { InterDataType } from '../InterrogatoryContainer/interData';
 import { CustomerInfoType } from '../InterrogatoryContainer';
+import FinishMessage from '../FinishMessage';
 
 const Container = styled.div`
     width: 100%;
@@ -42,6 +43,7 @@ interface Props {
     saveCustomerInfo: (propName: string, value: string) => void;
     setLast: (isLast: boolean) => void;
     customerInfo: CustomerInfoType;
+    finishStatus: null | 'success' | 'fail' | 'load';
 }
 
 export default function Interrogatory({
@@ -56,6 +58,7 @@ export default function Interrogatory({
     saveCustomerInfo,
     setLast,
     customerInfo,
+    finishStatus,
 }: Props) {
     return (
         <Container>
@@ -88,6 +91,7 @@ export default function Interrogatory({
                         )
                     );
                 })}
+            {finishStatus && <FinishMessage finishStatus={finishStatus} />}
         </Container>
     );
 }

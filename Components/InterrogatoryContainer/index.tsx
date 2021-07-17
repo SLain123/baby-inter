@@ -25,6 +25,9 @@ export default function InterrogatoryContainer() {
     const [isStart, setStart] = useState(false);
     const [activeId, setActiveId] = useState<number | null>(null);
     const [isLast, setLast] = useState(false);
+    const [finishStatus, setFinishStatus] = useState<
+        null | 'success' | 'fail' | 'load'
+    >(null);
 
     const saveQuestionAndAnswer = (question: string) => {
         setAnswerList((current) => {
@@ -40,25 +43,26 @@ export default function InterrogatoryContainer() {
 
     useEffect(() => {
         if (isLast) {
-            console.log(answerList, customerInfo);
-
-            // emailjs
-            //     .send(
-            //         'service_q9newan',
-            //         'template_u51wbbj',
-            //         {
-            //             answers: JSON.stringify(answerList.answers),
-            //         },
-            //         // 'user_YPN7p6zRQ4HdzMP37Gm3S',
-            //     )
-            //     .then(
-            //         (result) => {
-            //             console.log(result.text);
-            //         },
-            //         (error) => {
-            //             console.log(error.text);
-            //         },
-            //     );
+            setFinishStatus('load');
+            emailjs
+                .send(
+                    'service_q9newan',
+                    'template_u51wbbj',
+                    {
+                        customerName: JSON.stringify(customerInfo.name),
+                        customerEmail: JSON.stringify(customerInfo.email),
+                        answers: JSON.stringify(answerList),
+                    },
+                    'user_YPN7p6zRQ4HdzMP37Gm3S',
+                )
+                .then((result) => {
+                    console.log(result.text);
+                    setFinishStatus('success');
+                })
+                .catch((error) => {
+                    console.log(error.text);
+                    setFinishStatus('fail');
+                });
         }
     }, [isLast, answerList, customerInfo]);
 
@@ -75,6 +79,7 @@ export default function InterrogatoryContainer() {
             saveCustomerInfo={saveCustomerInfo}
             setLast={setLast}
             customerInfo={customerInfo}
+            finishStatus={finishStatus}
         />
     );
 }
