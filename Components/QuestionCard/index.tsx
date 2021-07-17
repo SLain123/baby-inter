@@ -19,6 +19,14 @@ const Container = styled.div`
     background-color: #ffffff;
     border-radius: 20px;
     box-shadow: 0px 0px 20px 0px rgb(0 0 0 / 40%);
+    padding-bottom: 70px;
+
+    @media (max-height: 650px) {
+        position: static;
+        transform: translate(0, 0);
+        margin: 15px auto;
+        min-height: 95vh;
+    }
 `;
 
 const Question = styled.p`
@@ -30,6 +38,8 @@ const Question = styled.p`
 `;
 
 const NextBtn = styled.button`
+    position: absolute;
+    bottom: 15px;
     font-size: 18px;
     background: ${(props) => (props.disabled ? '#9b9672' : '#ffde00')};
     color: #3c3d3d;

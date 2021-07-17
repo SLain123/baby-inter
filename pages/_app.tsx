@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     backdrop-filter: blur(3px);
     min-height: 100vh;
     min-width: 100%;
+    height: 100%;
   }
 `;
 

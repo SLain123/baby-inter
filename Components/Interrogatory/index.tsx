@@ -5,14 +5,13 @@ import { CustomerInfoType } from '../InterrogatoryContainer';
 
 const Container = styled.div`
     width: 100%;
-    max-width: 1280px;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const StartBtn = styled.button`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     min-width: 200px;
     min-height: 70px;
     font-size: 25px;
